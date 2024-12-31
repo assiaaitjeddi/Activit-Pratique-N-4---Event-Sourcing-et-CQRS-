@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: CQRS-Event-Sourcing
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/cqrs_database?createDatabaseIfNotExist=true&serverTimezone=UTC
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL8PASSWORD:databases-secret-key}
+    jpa:
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.MariaDBDialect
+      hibernate:
+        ddl-auto: update
+
+
+  server:
+    port: 8082
+
