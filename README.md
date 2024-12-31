@@ -42,7 +42,7 @@ Le projet est structuré pour séparer clairement les responsabilités entre les
 - **Meta Data** :  
   ![Meta Data](captures/picture5.png)
 - **Payload** :  
-  ![Payload](captures/picture7.png)
+ 
 
 Dans un système basé sur **Event Sourcing**, chaque événement correspond à un changement d’état, ce qui permet une traçabilité complète. Par exemple :
 1. Lorsqu’un compte est créé, un événement `AccountCreatedEvent` est généré avec des détails comme le montant initial, la devise, et le statut `CREATED`.
@@ -52,7 +52,6 @@ Dans un système basé sur **Event Sourcing**, chaque événement correspond à 
 
 ### Captures supplémentaires :
 - Commande de création :  
-  ![Command UI](captures/picture2.png)
 - Base de données après création :  
   ![Updated Database](captures/picture4.png)
 
