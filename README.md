@@ -1,68 +1,73 @@
-# EL HOU Salima sdia 2
-
 # Gestion de Comptes avec CQRS et Event Sourcing
 
-Cette application permet de gérer des comptes en utilisant les patterns **Command Query Responsibility Segregation (CQRS)** et **Event Sourcing**. Elle est développée avec **Spring Boot** et **Axon Framework**.
+Cette application propose une gestion avancée de comptes bancaires en adoptant les patterns **Command Query Responsibility Segregation (CQRS)** et **Event Sourcing**. Le projet est conçu avec **Spring Boot** et **Axon Framework**.
 
-
+---
 
 ## Description
-Ce projet est une implémentation des patterns CQRS et Event Sourcing pour gérer des comptes bancaires. Il permet d'exécuter des commandes (création de compte, débit, crédit) et d'obtenir l'état actuel des comptes en se basant sur les événements enregistrés.
+Ce projet met en œuvre les concepts de CQRS et d’Event Sourcing pour assurer une gestion efficace des comptes. Il permet de :
+- Exécuter des commandes telles que la création, le débit ou le crédit des comptes.
+- Obtenir l’état actuel des comptes en rejouant les événements stockés.
+
+---
 
 ## Technologies utilisées
 - **Java**
 - **Spring Boot**
 - **Axon Framework**
 - **Event Store**
-- **MySql** pour le développement et les tests
+- **MySQL** pour les phases de développement et de test
+
+---
 
 ## Structure du projet
-Le projet est structuré autour des concepts CQRS et Event Sourcing :
-- **Commandes** : Création, Débit, Crédit, et Fermeture des comptes.
-- **Événements** : Enregistrement d'événements tels que `AccountCreatedEvent`, `AccountDebitedEvent`, etc.
+Le projet est structuré pour séparer clairement les responsabilités entre les commandes et les requêtes :
+- **Commandes** : Gestion des actions comme la création de compte, le débit, le crédit ou la fermeture.
+- **Événements** : Enregistrement des changements d’état sous forme d’événements, tels que `AccountCreatedEvent` et `AccountDebitedEvent`.
 
-<img src="captures/structure.png">
+---
 
-## part 1 UI (Commandes CQRS):
+## Part 1 : Gestion des Commandes (UI - CQRS)
 
-- La partie UI envoie des commandes pour effectuer des actions dans le système, comme créer un nouveau compte bancaire, déposer ou retirer de l’argent. Ces commandes sont gérées par le côté Command du CQRS qui crée ou modifie les états des agrégats.
+- L'interface utilisateur (UI) envoie des commandes pour effectuer des actions sur les comptes, telles que la création d’un compte ou la gestion des transactions financières.
+- Ces commandes sont traitées par le côté Command de l'architecture CQRS, qui enregistre les modifications sous forme d’événements dans l’Event Store.
 
-<img src="captures/1V1.png">
+### Illustrations :
+- Interface des commandes :  
+  ![Command UI](captures/picture1.png)
+- Base de données :  
+  ![Database](captures/picture3.png)
 
-**BD**
-<img src="captures/2V1.png">
+#### Événements enregistrés :
+- **Meta Data** :  
+  ![Meta Data](captures/picture5.png)
+- **Payload** :  
+  ![Payload](captures/picture7.png)
 
-domain event entry **meta_data.bin** :
-<img src="captures/3V1.png">
+Dans un système basé sur **Event Sourcing**, chaque événement correspond à un changement d’état, ce qui permet une traçabilité complète. Par exemple :
+1. Lorsqu’un compte est créé, un événement `AccountCreatedEvent` est généré avec des détails comme le montant initial, la devise, et le statut `CREATED`.
+2. Des événements tels que `AccountActivatedEvent` mettent à jour le statut à `ACTIVATED` après validation.
 
-domain event entry **payload.bin** :
-<img src="captures/4V1.png">
+![Event Example](captures/picture9.png)
 
-Dans un système **CQRS** avec **Event Sourcing**, chaque changement d'état est enregistré comme un événement distinct dans un Event Store. Ici, cet événement indique que un compte a été créé avec un montant initial de 3200 MAD
-<img src="captures/5V1.png">
+### Captures supplémentaires :
+- Commande de création :  
+  ![Command UI](captures/picture2.png)
+- Base de données après création :  
+  ![Updated Database](captures/picture4.png)
 
-1. **Création de compte** : Lorsqu'un compte est créé, un événement `AccountCreatedEvent` est enregistré, avec des informations telles que le montant initial, la devise, et le statut `CREATED`.
+---
 
-2. **Activation du compte** : Après la création, un événement `AccountActivatedEvent` est enregistré pour activer le compte, mettant à jour le statut à `ACTIVATED`.
+## Part 2 : Requêtes et Affichage des Données (UI - Query)
 
-Chaque événement est stocké de manière permanente dans l'Event Store, et l'état actuel du compte peut être reconstruit en rejouant ces événements dans l'ordre chronologique. Cela garantit l'historisation complète des changements de l’état, offrant ainsi un historique clair et immuable des actions effectuées sur le compte.
-<img src="captures/6V1.png">
+- Le côté Query gère les requêtes pour afficher les informations à jour des comptes, grâce aux projections générées à partir des événements enregistrés.
 
-<img src="captures/1V2.png">
-<img src="captures/2V2.png">
-<img src="captures/3V2.png">
-<img src="captures/4V2.png">
+### Fonctionnalités :
+- **Affichage de tous les comptes** :  
+  ![All Accounts](captures/picture10.png)
+- **Recherche par ID** :  
+  ![Account by ID](captures/picture12.png)
 
-## part 2 Affichage de Données en Lecture (Query) :
+---
 
-- La UI interroge le côté Query pour obtenir des informations à jour et les afficher. Avec l'Event Sourcing, ces informations sont généralement récupérées à partir d'une base de données de projection (une vue optimisée pour les requêtes de lecture).
-
-<img src="captures/5V2.png">
-
-- ALL ACCOUNTS : 
-
-<img src="captures/6V2.png">
-
-- ACCOUNT BY ID :
-
-<img src="captures/7V2.png">
+Ce projet illustre la puissance de **CQRS** et **Event Sourcing** pour garantir une gestion performante et traçable des comptes bancaires.  
