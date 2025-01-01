@@ -48,7 +48,6 @@ Dans un système basé sur **Event Sourcing**, chaque événement correspond à 
 1. Lorsqu’un compte est créé, un événement `AccountCreatedEvent` est généré avec des détails comme le montant initial, la devise, et le statut `CREATED`.
 2. Des événements tels que `AccountActivatedEvent` mettent à jour le statut à `ACTIVATED` après validation.
 
-![Event Example](captures/picture9.png)
 
 ### Captures supplémentaires :
 - Commande de création :  
